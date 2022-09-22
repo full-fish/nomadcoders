@@ -1,0 +1,88 @@
+.hidden {
+  display: none;
+}
+body {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.mid {
+  width: 100vw;
+
+  /* height: 100vh; */
+  /* background만 해도됨 -image는 이미지 여러개 중복해서 가능함 */
+  /* background-image: url("../img/0.JPG"); */
+  background-repeat: no-repeat;
+
+  background-size: contain;
+
+  background-position: center;
+}
+.image {
+  width: 100%;
+  vertical-align: middle;
+}
+.image .text {
+  width: 40%;
+  margin: 10px auto;
+  border: 1px solid #000000;
+  position: relative;
+}
+.text {
+  padding: 5px 10px;
+  /* background-color: yellow; */
+  text-align: center;
+  position: absolute;
+  top: 80%;
+  left: 35%;
+}
+.clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5rem;
+  height: 50rem;
+  position: center;
+  padding: 0 4rem;
+}
+
+.number.pop {
+  color: white;
+  font-weight: bolder;
+  transform: scale(1.4);
+  background-color: rgba(0, 10, 0, 0.3);
+  box-shadow: -10px -5px 20px -5px grey, 10px 10px 20px rgba(0, 10, 0, 0.7);
+}
+
+.strip {
+  transition: transform 500ms ease-in-out;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  box-shadow: -10px -10px 20px -5px grey, 10px 10px 20px rgba(0, 10, 0, 0.7);
+}
+.hr,
+.min,
+.sec {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2.7rem;
+  grid-row: 1/2;
+  /* width: 110px; */
+  align-items: start;
+  /* position: center; */
+}
+/* 본래 */
+.number {
+  padding: 0.5em;
+  width: 4rem;
+  height: 4rem;
+  display: grid;
+  place-items: center;
+  color: gray;
+  transition: all 500ms 100ms ease;
+  border-radius: 50%;
+}

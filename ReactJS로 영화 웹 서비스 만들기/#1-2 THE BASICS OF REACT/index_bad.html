@@ -1,0 +1,36 @@
+<!-- 바닐라 js는 html생성이후 strip에서 document.~해서 해당 태그를 불러온뒤에 html을 변경하는데
+React는 js에서 모든것을 만든 후 html에 뿌려줌 -->
+
+<!-- 이건 실제로는 안쓰는 복잡한 방법 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script>
+      //   const h3 = React.createElement(
+      //     "h3",
+      //     { onMouseEnter: () => console.log("moust enter") },
+      //     "hi"
+      //   );
+
+      //   위에 주석이랑 같은거임
+      const Title = (
+        <h3 id="title" onMouseEnter={() => console.log("moust enter")}>
+          hi
+        </h3>
+      );
+      const root = document.querySelector("#root");
+      const button = React.createElement("button", { onClick: () => console.log("ddd") }, "click");
+      const container = React.createElement("div", null, [h3, button]);
+      ReactDOM.render(container, root);
+    </script>
+  </body>
+</html>

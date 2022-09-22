@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const root = document.querySelector("#root");
+      const Title = () => (
+        <h3 id="title" onMouseEnter={() => console.log("moust enter")}>
+          hi
+        </h3>
+      );
+      const Button = () => (
+        <button style={{ backgroundColor: "totato" }} onClick={() => console.log("clicked")}>
+          click
+        </button>
+      );
+      const Container = () => (
+        <div>
+          <Title />
+          <Button />
+        </div>
+      );
+      ReactDOM.render(<Container />, root);
+    </script>
+  </body>
+</html>

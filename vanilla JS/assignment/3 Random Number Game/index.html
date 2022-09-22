@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vanilla Challenge</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="src/index.css" />
+  </head>
+
+  <body>
+    <div style="font-size: 40px; font-weight: bold">Random Number Game</div>
+    <p></p>
+    <form class="form">
+      <span style="font-size: 20px; font-weight: bold">Generate a number between 0 and</span>
+      <input class="rangeNum" type="number" min="0" required />
+      <!-- <span class="hidden err">숫자만 적어 주세요.</span> -->
+      <p></p>
+      <span>Guess the number</span>
+      <input class="guessNum" type="number" required />
+      <input type="submit" value="Play!" />
+    </form>
+
+    <div class="hidden youCoice"></div>
+    <div style="font-size: 20px; font-weight: bold" class="hidden gameResult"></div>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>

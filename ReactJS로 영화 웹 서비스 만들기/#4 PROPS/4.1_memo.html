@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const root = document.querySelector("#root");
+      function Btn({ text, changeValue }) {
+        console.log(text, "was rendered");
+        return (
+          <button
+            onClick={changeValue}
+            style={{
+              backgroundColor: "tomato",
+              color: "white",
+              padding: "10px 20px",
+              border: 0,
+              borderRadius: 10,
+            }}
+          >
+            {text}
+          </button>
+        );
+      }
+      const MemorizedBtn = React.memo(Btn);
+      function App() {
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Rever Changes");
+        return (
+          <div>
+            <MemorizedBtn text={value} changeValue={changeValue} />
+            <MemorizedBtn text="Continue" />
+          </div>
+        );
+      }
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
