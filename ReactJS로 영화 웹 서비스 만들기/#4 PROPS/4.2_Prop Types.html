@@ -13,15 +13,15 @@
     <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-      const root = document.querySelector("#root");
+      const root = document.querySelector('#root')
       function Btn({ text, fontSize }) {
-        console.log(text, "was rendered");
+        console.log(text, 'was rendered')
         return (
           <button
             style={{
-              backgroundColor: "tomato",
-              color: "white",
-              padding: "10px 20px",
+              backgroundColor: 'tomato',
+              color: 'white',
+              padding: '10px 20px',
               border: 0,
               borderRadius: 10,
               fontSize,
@@ -29,22 +29,22 @@
           >
             {text}
           </button>
-        );
+        )
       }
-      const MemorizedBtn = React.memo(Btn);
+      const MemorizedBtn = React.memo(Btn)
       Btn.propTypes = {
         text: PropTypes.string.isRequired,
         fontSize: PropTypes.number,
-      };
+      }
       function App() {
         return (
           <div>
             <Btn text="Save Changes" fontSize={18}></Btn>
             <Btn text={20} fontSize={18}></Btn>
           </div>
-        );
+        )
       }
-      ReactDOM.render(<App />, root);
+      ReactDOM.render(<App />, root)
     </script>
   </body>
 </html>
