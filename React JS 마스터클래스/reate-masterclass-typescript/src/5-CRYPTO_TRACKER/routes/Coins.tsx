@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useQuery } from 'react-query'
 import axios from 'axios'
+import { fetchCoins } from '../api'
+import { Helmet } from 'react-helmet'
+
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
@@ -16,7 +20,7 @@ const Header = styled.div`
 const CoinsList = styled.ul``
 const Coin = styled.li`
   background-color: white;
-  color: ${props => props.theme.bgColor};
+  color: ${props => props.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -47,7 +51,9 @@ const Img = styled.img`
   height: 35px;
   margin-right: 10px;
 `
-interface CoinInterface {
+
+const Btn = styled.button``
+interface ICoin {
   id: string
   name: string
   symbol: string
@@ -57,32 +63,46 @@ interface CoinInterface {
   type: string
 }
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([])
-  const [loading, setLoading] = useState(true)
-  const getCoins = async () => {
-    const res = await axios('https://api.coinpaprika.com/v1/coins')
-    console.log(res)
-    setCoins(res.data.slice(0, 100))
-    setLoading(false)
+  // const [coins, setCoins] = useState<CoinInterface[]>([])
+  // const [loading, setLoading] = useState(true)
+  // const getCoins = async () => {
+  //   const res = await axios('https://api.coinpaprika.com/v1/coins')
+  //   console.log(res)
+  //   setCoins(res.data.slice(0, 100))
+  //   setLoading(false)
+  // }
+  // useEffect(() => {
+  //   // ;(async () => {
+  //   // const response = await fetch('https://api.coinpaprika.com/v1/coins')
+  //   // const json = await response.json()
+  //   // setCoins(json.slice(0, 100))
+  //   // })() // 이런 함수는 바로 실행됨
+  //   getCoins()
+  // }, [])
+  const { isLoading, data } = useQuery<ICoin[]>('allCoins', fetchCoins)
+  const [theme, setTheme] = useState(localStorage.getItem('theme') === 'dark' || localStorage.getItem('theme') === undefined ? 'light' : 'dark')
+  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    theme === 'dark' ? setTheme('light') : setTheme('dark')
+    window.localStorage.setItem('theme', theme)
+    window.location.reload()
   }
-  useEffect(() => {
-    // ;(async () => {
-    // const response = await fetch('https://api.coinpaprika.com/v1/coins')
-    // const json = await response.json()
-    // setCoins(json.slice(0, 100))
-    // })() // 이런 함수는 바로 실행됨
-    getCoins()
-  }, [])
+
   return (
     <Container>
+      <Helmet>
+        <title>코인</title>
+      </Helmet>
+      <Btn onClick={onClick}>Dark or Light</Btn>
       <Header>
         <Title>코인</Title>
       </Header>
-      {loading ? (
+
+      {isLoading ? (
         <Loadder>Loading...</Loadder>
       ) : (
         <CoinsList>
-          {coins.map(coin => (
+          {/* {coins.map(coin => ( */}
+          {data?.slice(0, 100).map(coin => (
             <Coin key={coin.id}>
               <Link
                 to={{

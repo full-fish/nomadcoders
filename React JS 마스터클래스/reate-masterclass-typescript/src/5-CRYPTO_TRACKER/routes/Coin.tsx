@@ -1,10 +1,13 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { Switch, Route, useLocation, useParams, useRouteMatch } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled, { createGlobalStyle } from 'styled-components'
 import Chart from './Chart'
 import Price from './Price'
+import { fetchCoinInfo, fetchCoinTickers } from '../api'
+import { Helmet } from 'react-helmet'
 
 const Overview = styled.div`
   display: flex;
@@ -67,7 +70,9 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `
-
+const BackBtn = styled.button`
+  margin-left: 5px;
+`
 interface Params {
   coinId: string
 }
@@ -131,27 +136,35 @@ interface PriceData {
 }
 function Coin() {
   //   const { coinId } = useParams<{ coinId: string }>()
-  const [loading, setLoading] = useState(true)
-  const [info, setInfo] = useState<InfoData>()
-  const [priceInfo, setPriceInfo] = useState<PriceData>()
   const { coinId } = useParams<Params>()
   const { state } = useLocation<RouteState>()
   const priceMatch = useRouteMatch('/:coinId/price')
   const chartMatch = useRouteMatch('/:coinId/chart')
-  useEffect(() => {
-    ;(async () => {
-      const { data: infoData } = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      const { data: priceData } = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      setInfo(infoData)
-      setPriceInfo(priceData)
-      setLoading(false)
-    })()
-  }, [coinId])
-
+  // const [priceInfo, setPriceInfo] = useState<PriceData>()
+  // const [info, setInfo] = useState<InfoData>()
+  // const [loading, setLoading] = useState(true)
+  // useEffect(() => {
+  //   ;(async () => {
+  //     const { data: infoData } = await axios(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     const { data: priceData } = await axios(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     setInfo(infoData)
+  //     setPriceInfo(priceData)
+  //     setLoading(false)
+  //   })()
+  // }, [coinId])
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(['info', coinId], () => fetchCoinInfo(coinId))
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(['tickers', coinId], () => fetchCoinTickers(coinId), {
+    refetchInterval: 5000,
+  })
+  const loading = infoLoading || tickersLoading
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</title>
+      </Helmet>
       <Header>
-        <Title>{state?.name ? state.name : loading ? 'Loading...' : info?.name}</Title>
+        <Title>{state?.name ? state.name : loading ? 'Loading...' : infoData?.name}</Title>
+        <Link to={`/`}>뒤로가기</Link>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -160,26 +173,26 @@ function Coin() {
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${info?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{info?.open_source ? 'Yes' : 'No'}</span>
+              <span>Price:</span>
+              <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
@@ -192,10 +205,10 @@ function Coin() {
           </Tabs>
           <Switch>
             <Route path={`/${coinId}/price`}>
-              <Price />
+              <Price coinId={coinId} />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
