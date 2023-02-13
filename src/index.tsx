@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { ThemeProvider } from 'styled-components'
 // import A from './2-STYLED-COMPONENTS/2.0-2.3'
 // import B from './2-STYLED-COMPONENTS/2.4-2.6'
 // import C from './2-STYLED-COMPONENTS/2.7'
@@ -31,10 +30,8 @@ root.render(
     </ThemeProvider> */}
     {/* <D /> */}
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={localStorage.getItem('theme') === 'dark' ? darkTheme : lightTheme}>
-        {/* <E /> */}
-        <App />
-      </ThemeProvider>
+      {/* <E /> */}
+      <App />
     </QueryClientProvider>
     {/* </React.StrictMode> */}
   </div>
