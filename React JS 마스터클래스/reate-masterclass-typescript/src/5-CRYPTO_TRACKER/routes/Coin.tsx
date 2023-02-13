@@ -212,7 +212,7 @@ function Coin({ isDark }: ICoinProps) {
               <Price coinId={coinId} />
             </Route>
             <Route path={`/:coinId/chart`}>
-            <Chart isDark={isDark} coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>
@@ -221,3 +221,5 @@ function Coin({ isDark }: ICoinProps) {
   )
 }
 export default Coin
+//test
+//2
